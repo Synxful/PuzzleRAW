@@ -1,16 +1,12 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.CropImageFilter;
 import java.awt.image.FilteredImageSource;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,12 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-
 public class PuzzleEx extends JFrame {
 
-    boolean bildEins;
-    boolean bildZwei;
-    boolean bildDrei;
+    public boolean rookieTrue = false;
+    public boolean amateurTrue = false;
+    public boolean profiTrue = false;
 
     final char IMAGE1 = 'a';
     final char IMAGE2 = 'b';
@@ -33,9 +28,6 @@ public class PuzzleEx extends JFrame {
     char img;
     private JPanel panel;
     private JPanel gameStat;
-
-
-
 
     private BufferedImage source;
     private BufferedImage resized;
@@ -61,33 +53,32 @@ public class PuzzleEx extends JFrame {
     private final int NUMBER_OF_BUTTONS = 12;
     private final int DESIRED_WIDTH = 900;
 
+    // difficulty max steps
+    public static int rookieSteps = 10;
+    public static int amateurSteps = 16;
+    public static int profiSteps = 20;
+
+
+    ButtonGroup diffGroup = new ButtonGroup();
+    JRadioButtonMenuItem rookie = new JRadioButtonMenuItem("Rookie");
+    JRadioButtonMenuItem amateur = new JRadioButtonMenuItem("Amateur");
+    JRadioButtonMenuItem profi = new JRadioButtonMenuItem("Profi");
+
     public JPanel getPanel() {
         return panel;
     }
 
 
     public PuzzleEx() {
-
         super();
         initUI();
-
     }
 
     private void initUI() {
-        // this.removeAll();
+
         panel = new JPanel();
 
         gameStat= new JPanel();
-
-
-
-        for (Component jp : panel.getComponents())
-        {
-            int i = jp.hashCode();
-            System.out.println(jp.hashCode() + jp.getClass().toString());
-        }
-        //this.add(panel);
-
 
         solution = new ArrayList<>();
 
@@ -106,7 +97,6 @@ public class PuzzleEx extends JFrame {
 
         buttons = new ArrayList<>();
 
-
         panel.removeAll();
         panel.repaint();
         panel.invalidate();
@@ -120,25 +110,32 @@ public class PuzzleEx extends JFrame {
         JMenu difficulty = new JMenu("Schwierigkeitsgrad");
 
 
-        // 1 Menu Neustart
+        // 1 Menu < Neustart >
         restart = new JMenuItem("Neustart");
         restart.setToolTipText("Startet das Spiel neu");
 
+
         restart.addActionListener((ActionEvent event) ->{
+
+            rookieSteps = 10;
+            amateurSteps = 16;
+            profiSteps = 20;
+
             remove(panel);
             initUI();
         } );
 
-        // 1 Menu Exit
+        // 1 Menu < Exit >
         exit =  new JMenuItem("Beenden");
         exit.setToolTipText("Beendet das Spiel");
         exit.addActionListener((ActionEvent event) ->{
             System.exit(0);
         } );
 
-        // 2 Menu Bildauswahl
 
-        JMenuItem pic1 = new JMenuItem("Blondine");
+
+        // 2 Menu < Bildauswahl >
+        JMenuItem pic1 = new JMenuItem("Mary Jane");
         pic1.addActionListener((ActionEvent event) ->{
 
 
@@ -148,7 +145,7 @@ public class PuzzleEx extends JFrame {
 
         } );
 
-        JMenuItem pic2 = new JMenuItem("Salma Hayek");
+        JMenuItem pic2 = new JMenuItem("Megan Fox");
         pic2.addActionListener((ActionEvent event) ->{
 
             img = IMAGE2;
@@ -157,7 +154,7 @@ public class PuzzleEx extends JFrame {
 
         } );
 
-        JMenuItem pic3 = new JMenuItem("Megan Fox");
+        JMenuItem pic3 = new JMenuItem("Salma Hayek");
         pic3.addActionListener((ActionEvent event) ->{
 
             img = IMAGE3;
@@ -165,42 +162,75 @@ public class PuzzleEx extends JFrame {
             initUI();
 
         } );
-        JMenuItem choosePicture = new JMenuItem("Eigenes Bild laden");
-        choosePicture.addActionListener((ActionEvent event) -> {
 
 
-            img = IMAGE4;
-            // Dialogfenster für Auswahl vom eigenem Bild
-            JFileChooser fc = new JFileChooser();
-
-            // Filter für JPG und PNG Bilder
-            fc.setAcceptAllFileFilterUsed(false);
-            FileNameExtensionFilter imageFilefilter = new FileNameExtensionFilter("JPG files","jpg");
-            FileNameExtensionFilter imageFilefilter2 = new FileNameExtensionFilter("PNG Files","png");
-            fc.addChoosableFileFilter(imageFilefilter);
-            fc.addChoosableFileFilter(imageFilefilter2);
-
-            // Pfad im String auslesen
-            int result = fc.showOpenDialog(null);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
-                String pathName = file.getPath();
-                System.out.println(pathName);
-                this.picPath = Paths.get(pathName);
-                System.out.println(getPicPath().toString());
-                remove(panel);
-                initUI();
-            }
-        });
 
 
         // 3 Menu <Difficulty>
-        ButtonGroup diffGroup = new ButtonGroup();
 
-        JRadioButtonMenuItem rookie = new JRadioButtonMenuItem("Rookie");
+        //DEFAULT
         rookie.setSelected(true);
-        JRadioButtonMenuItem amateur = new JRadioButtonMenuItem("Amateur");
-        JRadioButtonMenuItem profi = new JRadioButtonMenuItem("Profi");
+        rookieTrue = true;
+
+
+        rookie.addActionListener((ActionEvent event) ->{
+
+            remove(panel);
+            initUI();
+
+            rookie.setSelected(true);
+            rookieTrue = true;
+            amateurTrue = false;
+            profiTrue = false;
+
+            rookieSteps = 10;
+            amateurSteps = 16;
+            profiSteps = 20;
+
+            System.out.println("VERSUCHE : " + rookieSteps);
+
+
+        } );
+
+
+        amateur.addActionListener((ActionEvent event) ->{
+
+            remove(panel);
+            initUI();
+
+            amateur.setSelected(true);
+            rookieTrue = false;
+            amateurTrue = true;
+            profiTrue = false;
+
+            rookieSteps = 10;
+            amateurSteps = 16;
+            profiSteps = 20;
+
+            System.out.println("VERSUCHE : " + amateurSteps);
+
+
+        } );
+
+        profi.addActionListener((ActionEvent event) ->{
+
+            remove(panel);
+            initUI();
+
+            profi.setSelected(true);
+            rookieTrue = false;
+            amateurTrue = false;
+            profiTrue = true;
+
+            rookieSteps = 10;
+            amateurSteps = 16;
+            profiSteps = 20;
+
+            System.out.println("VERSUCHE : " + profiSteps);
+
+
+        } );
+
 
         diffGroup.add(rookie);
         diffGroup.add(amateur);
@@ -212,7 +242,6 @@ public class PuzzleEx extends JFrame {
         picture.add(pic1);
         picture.add(pic2);
         picture.add(pic3);
-        picture.add(choosePicture);
 
         difficulty.add(rookie);
         difficulty.add(amateur);
@@ -270,7 +299,7 @@ public class PuzzleEx extends JFrame {
 
         Collections.shuffle(buttons, new java.util.Random(System.currentTimeMillis()));
 
-        for (   MyButton btn :  buttons){
+        for (MyButton btn :  buttons){
             panel.add(btn);
             btn.setBorder(BorderFactory.createLineBorder(Color.gray));
             btn.addActionListener(new ClickAction(this));
@@ -293,6 +322,48 @@ public class PuzzleEx extends JFrame {
         return newHeight;
     }
 
+    private void gameOver () throws IOException{
+
+        /*panel.removeAll();
+        panel.repaint();
+        remove(panel);
+
+        try {
+            BufferedImage bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/game_over.jpg"));
+            source = bimg;
+            int h = getNewHeight(source.getWidth(), source.getHeight());
+            resized = resizeImage(source, DESIRED_WIDTH, h,
+                    BufferedImage.TYPE_INT_ARGB);
+
+        } catch (IOException ex) {
+            Logger.getLogger(PuzzleEx.class.getName()).log(
+                    Level.SEVERE, null, ex);
+        }
+
+        width = resized.getWidth(null);
+        height = resized.getHeight(null);
+
+        pack();
+        setTitle("Puzzle");
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
+
+
+
+        /*BufferedImage bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/game_over.jpg"));
+        JLabel picLabel = new JLabel(new ImageIcon(bimg));
+        panel.add(picLabel);*/
+
+        panel.repaint();
+        panel.invalidate();
+        panel.validate();
+        remove(panel);
+
+
+
+
+    }
 
     private BufferedImage loadImage() throws IOException {
 
@@ -312,17 +383,17 @@ public class PuzzleEx extends JFrame {
                 picPath = picPath.replaceAll("file:/", "");
                 System.out.println(picPath);*/
 
-                bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/pic1.jpg"));
+                bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/mary_jane.jpg"));
                 break;
 
             }
             case IMAGE2:  {
-                bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/pic2.jpg"));
+                bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/megan_fox.jpg"));
                 break;
 
             }
             case IMAGE3:  {
-                bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/pic3.jpg"));
+                bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/salma_hayek.jpg"));
                 break;
 
             }
@@ -348,14 +419,12 @@ public class PuzzleEx extends JFrame {
                 bimg = ImageIO.read(file);*/
 
 
-                bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/pic1.jpg"));
+                bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/diane_kruger.jpg"));
             }
 
         }
         return bimg;
     }
-
-
 
     private BufferedImage resizeImage(BufferedImage originalImage, int width,
                                       int height, int type) throws IOException {
@@ -366,6 +435,44 @@ public class PuzzleEx extends JFrame {
         g.dispose();
 
         return resizedImage;
+    }
+
+
+    public void checkRadioBtn(){
+
+        // CHECK RADIOBUTTON
+
+        System.out.println("CHECK RADIO BUTTON METHOD USED!!! ");
+        if(rookieTrue){
+            System.out.println(rookieSteps);
+            rookieSteps = rookieSteps-1;
+            System.out.println(rookieSteps);
+        }
+        else if(amateur.isSelected()){
+            System.out.println(amateurSteps);
+            amateurSteps = amateurSteps-1;
+            System.out.println(amateurSteps);
+
+        } else if(profi.isSelected()){
+            System.out.println(profiSteps);
+            profiSteps = profiSteps-1;
+            System.out.println(profiSteps);
+        }
+
+    }
+
+    public void checkSteps(){
+
+        System.out.println("checkSteps used.");
+
+        // CHECK ZERO STEPS
+        if(rookieSteps == 0 || amateurSteps == 0 || profiSteps == 0 ){
+            try {
+                gameOver();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void checkSolution() {

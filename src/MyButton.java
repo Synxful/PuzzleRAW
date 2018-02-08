@@ -41,21 +41,6 @@ class MyButton extends JButton {
             }
         });
 
-
-        addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("test actionlistener" + e.hashCode());
-
-                JButton tempB = (JButton) e.getSource();
-                update(tempB.getGraphics());
-                tempB.setVisible(true);
-                tempB.invalidate();
-                tempB.validate();
-                tempB.repaint();
-
-            }
-        });
     }
 
     public void setLastButton() {

@@ -3,8 +3,8 @@ import java.awt.event.ActionEvent;
 import java.util.Collections;
 
 
-
 class ClickAction extends AbstractAction {
+
 
     private PuzzleEx puzzleEx;
 
@@ -17,6 +17,9 @@ class ClickAction extends AbstractAction {
 
         checkButton(e);
         puzzleEx.checkSolution();
+        puzzleEx.checkRadioBtn();
+        puzzleEx.checkSteps();
+
     }
 
     private void checkButton(ActionEvent e) {
