@@ -305,53 +305,50 @@ public class PuzzleEx extends JFrame {
         switch (img)
         {
             case IMAGE1:  {
-                System.out.println(getClass().getClassLoader().getResourceAsStream("res/pic1.jpg"));
+
+                /*URL url = getClass().getResource("res/pic1.jpg");
+                String picPath = url.toString();
+                picPath = picPath.replaceAll("\\\\", "/");
+                picPath = picPath.replaceAll("file:/", "");
+                System.out.println(picPath);*/
+
                 bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/pic1.jpg"));
                 break;
+
             }
             case IMAGE2:  {
-                System.out.println(getClass().getClassLoader().getResourceAsStream("res/pic2.jpg"));
                 bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/pic2.jpg"));
                 break;
+
             }
             case IMAGE3:  {
-                System.out.println(getClass().getClassLoader().getResourceAsStream("res/pic3.jpg"));
                 bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/pic3.jpg"));
                 break;
+
             }
             case IMAGE4: {
 
-                System.out.println("------------------------");
-                String picPath = getPicPath().toString();
-                System.out.println(picPath + "  PIC PATH NO REPLACE");
-                System.out.println("------------------------");
+                /*String picPath = getPicPath().toString();
                 picPath = picPath.replaceAll("\\\\", "/");
-                System.out.println(picPath + "PIC PATH REPLACED");
-                System.out.println("------------------------");
-
-
                 URL url = getClass().getResource(picPath);
-                System.out.println(url);
-
                 File file = new File(url.getPath());
-                bimg = ImageIO.read(file);
+                bimg = ImageIO.read(file);*/
 
-
-                /*System.out.println(getClass().getClassLoader().getResourceAsStream(getPicPath().toString()));
-                bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream(getPicPath().toString()));*/
+                System.out.println(getClass().getClassLoader().getResourceAsStream(getPicPath().toString()));
+                bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream(getPicPath().toString()));
                 break;
             }
             default:
             {
 
-                URL url = getClass().getResource("/res/pic1.jpg");
-                System.out.println(url.getPath());
-
+                /*URL url = getClass().getResource("/res/pic1.jpg");
+                System.out.println("DEFAUL URL : " + url.getPath());
                 File file = new File(url.getPath());
-                bimg = ImageIO.read(file);
+                System.out.println("FILE URL : " + url.getPath());
+                bimg = ImageIO.read(file);*/
 
 
-                /*bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/pic1.jpg"));*/
+                bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/pic1.jpg"));
             }
 
         }
