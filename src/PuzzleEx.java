@@ -448,7 +448,7 @@ public class PuzzleEx extends JFrame {
         setMaxSteps();
         remove(panel);
         initUI();
-        System.out.println("RESTARTED!");
+        System.out.println("GAME RESTARTED!");
     }
 
     public void UIexit(){
