@@ -73,11 +73,13 @@ public class PuzzleEx extends JFrame {
 
 
     /* CREATE MenuItems <Pictures> */
-    JMenuItem pic1 = new JMenuItem("Mary Jane");
-    JMenuItem pic2 = new JMenuItem("Megan Fox");
-    JMenuItem pic3 = new JMenuItem("Salma Hayek");
+    ButtonGroup pictureGroup = new ButtonGroup();
+    JRadioButtonMenuItem pic1  = new JRadioButtonMenuItem("Mary Jane");
+    JRadioButtonMenuItem pic2 = new JRadioButtonMenuItem("Megan Fox");
+    JRadioButtonMenuItem pic3 = new JRadioButtonMenuItem("Salma Hayek");
     JFileChooser fc = new JFileChooser();
-    JMenuItem choosePicture = new JMenuItem("Eigenes Bild laden");
+    JRadioButtonMenuItem choosePicture = new JRadioButtonMenuItem("Eigenes Bild laden");
+
 
     /* CREATE MenuItems <Difficulty> */
     ButtonGroup diffGroup = new ButtonGroup();
@@ -226,8 +228,11 @@ public class PuzzleEx extends JFrame {
 
             });
 
-            /* Menu <pictures>  */
+            /* Menu <Pictures>  */
 
+            pic1.setSelected(true);
+
+            // PICTURE 1
             pic1.addActionListener((ActionEvent event) -> {
 
 
@@ -240,6 +245,7 @@ public class PuzzleEx extends JFrame {
 
             });
 
+            // PICTURE 2
             pic2.addActionListener((ActionEvent event) -> {
 
                 System.out.println("CHOOSEN 'MEGAN FOX' PICTURE");
@@ -250,6 +256,7 @@ public class PuzzleEx extends JFrame {
 
             });
 
+            // PICTURE 3
             pic3.addActionListener((ActionEvent event) -> {
 
                 System.out.println("CHOOSEN 'SALMA HAYEK' PICTURE");
@@ -260,6 +267,7 @@ public class PuzzleEx extends JFrame {
 
             });
 
+            // CHOOSE PICTURE
             choosePicture.addActionListener((ActionEvent event) -> {
 
                 System.out.println("CHOOSEN 'IMAGE CHOOSER' PICTURE");
@@ -268,6 +276,8 @@ public class PuzzleEx extends JFrame {
                 img = IMAGE4;
                 // Filter für JPG und PNG Bilder
                 try {
+
+
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                     fc.setAcceptAllFileFilterUsed(false);
                     fc.addChoosableFileFilter(new FileNameExtensionFilter("JPG Datei", "jpg"));
@@ -289,26 +299,39 @@ public class PuzzleEx extends JFrame {
 
 
             /* ADDING MenuItems to FRAME */
+
+            /* <DIFFICULTY> ITEMS */
             diffGroup.add(rookie);
             diffGroup.add(amateur);
             diffGroup.add(profi);
 
-            gamemenu.add(restart);
-            gamemenu.add(exit);
+            difficulty.add(rookie);
+            difficulty.add(amateur);
+            difficulty.add(profi);
+
+
+            /* <PICTURES> ITEMS */
+            pictureGroup.add(pic1);
+            pictureGroup.add(pic2);
+            pictureGroup.add(pic3);
+            pictureGroup.add(choosePicture);
 
             picture.add(pic1);
             picture.add(pic2);
             picture.add(pic3);
             picture.add(choosePicture);
 
-            difficulty.add(rookie);
-            difficulty.add(amateur);
-            difficulty.add(profi);
 
+            /* <RESTART> & <EXIT> ITEMS */
+            gamemenu.add(restart);
+            gamemenu.add(exit);
+
+            /* ADDING ALL ITEMS TO THE <MENUBAR> */
             menubar.add(gamemenu);
             menubar.add(picture);
             menubar.add(difficulty);
 
+            /* SET <MENUBAR> AS FRAME MENU */
             setJMenuBar(menubar);
 
         }
