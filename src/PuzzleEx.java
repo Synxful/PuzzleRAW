@@ -18,7 +18,6 @@ public class PuzzleEx extends JFrame {
 
     char img;
     private JPanel panel;
-    private JPanel gameStat;
 
     public static int UIstartup = 1;
 
@@ -126,56 +125,7 @@ public class PuzzleEx extends JFrame {
         /* STARTUP SCHLEIFE */
         if (UIstartup == 1) {
 
-            /* Menu <Restart>  */
-            restart.setToolTipText("Startet das Spiel neu");
-            restart.addActionListener((ActionEvent event) -> {
-
-                rookieSteps = 10;
-                amateurSteps = 16;
-                profiSteps = 20;
-
-                remove(panel);
-                initUI();
-            });
-
-
-            /* Menu <Exit>  */
-
-            exit.setToolTipText("Beendet das Spiel");
-            exit.addActionListener((ActionEvent event) -> {
-                System.exit(0);
-            });
-
-
-            /* Menu <Bildauswahl>  */
-
-            pic1.addActionListener((ActionEvent event) -> {
-
-
-                img = IMAGE1;
-                remove(panel);
-                initUI();
-
-            });
-
-            pic2.addActionListener((ActionEvent event) -> {
-
-                img = IMAGE2;
-                remove(panel);
-                initUI();
-
-            });
-
-            pic3.addActionListener((ActionEvent event) -> {
-
-                img = IMAGE3;
-                remove(panel);
-                initUI();
-
-            });
-
-
-            /* 3 Menu <Difficulty>  */
+            /* Menu <Difficulty>  */
 
             // DEFAULT
             rookie.setSelected(true);
@@ -192,9 +142,7 @@ public class PuzzleEx extends JFrame {
                 amateurTrue = false;
                 profiTrue = false;
 
-                rookieSteps = 10;
-                amateurSteps = 16;
-                profiSteps = 20;
+                setMaxSteps();
 
                 System.out.println("VERSUCHE : " + rookieSteps);
 
@@ -212,9 +160,7 @@ public class PuzzleEx extends JFrame {
                 amateurTrue = true;
                 profiTrue = false;
 
-                rookieSteps = 10;
-                amateurSteps = 16;
-                profiSteps = 20;
+                setMaxSteps();
 
                 System.out.println("VERSUCHE : " + amateurSteps);
 
@@ -232,14 +178,53 @@ public class PuzzleEx extends JFrame {
                 amateurTrue = false;
                 profiTrue = true;
 
-                rookieSteps = 10;
-                amateurSteps = 16;
-                profiSteps = 20;
+                setMaxSteps();
 
                 System.out.println("VERSUCHE : " + profiSteps);
 
 
             });
+
+
+            /* Menu <Exit>  */
+
+            exit.setToolTipText("Beendet das Spiel");
+            exit.addActionListener((ActionEvent event) -> {
+                System.exit(0);
+            });
+
+        /* Menu <Bildauswahl>  */
+
+            pic1.addActionListener((ActionEvent event) -> {
+
+
+                setMaxSteps();
+                img = IMAGE1;
+                remove(panel);
+                initUI();
+
+
+            });
+
+            pic2.addActionListener((ActionEvent event) -> {
+
+
+                setMaxSteps();
+                img = IMAGE2;
+                remove(panel);
+                initUI();
+
+            });
+
+            pic3.addActionListener((ActionEvent event) -> {
+
+                setMaxSteps();
+                img = IMAGE3;
+                remove(panel);
+                initUI();
+
+            });
+
 
 
             /* ADDING MenuItems to FRAME */
@@ -265,6 +250,7 @@ public class PuzzleEx extends JFrame {
             setJMenuBar(menubar);
 
         }
+
 
 
         try {
@@ -462,6 +448,12 @@ public class PuzzleEx extends JFrame {
         return resizedImage;
     }
 
+
+    public void setMaxSteps() {
+        rookieSteps = 10;
+        amateurSteps = 16;
+        profiSteps = 20;
+    }
 
     public void checkRadioBtn() {
 
