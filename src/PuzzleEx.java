@@ -451,7 +451,6 @@ public class PuzzleEx extends JFrame {
 
         // CHECK RADIOBUTTON
 
-        System.out.println("CHECK RADIO BUTTON METHOD USED!!! ");
         if (rookieTrue) {
             rookieSteps = rookieSteps - 1;
             System.out.println("Steps left for ROOKIE : " + rookieSteps);
@@ -468,12 +467,12 @@ public class PuzzleEx extends JFrame {
 
     public void checkSteps() {
 
-        System.out.println("checkSteps used.");
 
         // CHECK ZERO STEPS
         if (rookieSteps == 0 || amateurSteps == 0 || profiSteps == 0) {
             try {
                 gameOver();
+                System.out.println("GAME OVER !");
             } catch (IOException e) {
                 e.printStackTrace();
             }
