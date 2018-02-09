@@ -16,18 +16,11 @@ import java.util.logging.Logger;
 
 public class PuzzleEx extends JFrame {
 
-    public boolean rookieTrue = false;
-    public boolean amateurTrue = false;
-    public boolean profiTrue = false;
-
-    final char IMAGE1 = 'a';
-    final char IMAGE2 = 'b';
-    final char IMAGE3 = 'c';
-    final char IMAGE4 = 'd';
-
     char img;
     private JPanel panel;
     private JPanel gameStat;
+
+    public static int UIstartup = 1;
 
     private BufferedImage source;
     private BufferedImage resized;
@@ -35,38 +28,53 @@ public class PuzzleEx extends JFrame {
     private MyButton lastButton;
     private int width, height;
 
-    public List<MyButton> getButtons() {
-        return buttons;
-    }
-
     private List<MyButton> buttons;
     private List<Point> solution;
-    JMenuItem restart;
-    JMenuItem exit;
-
-    public Path getPicPath() {
-        return picPath;
-    }
 
     private Path picPath;
 
     private final int NUMBER_OF_BUTTONS = 12;
     private final int DESIRED_WIDTH = 900;
 
-    // difficulty max steps
+    /* CASE Variables <PictureChoose> */
+    final char IMAGE1 = 'a';
+    final char IMAGE2 = 'b';
+    final char IMAGE3 = 'c';
+    final char IMAGE4 = 'd';
+
+    /* MAX Step Variables <Difficulty> */
     public static int rookieSteps = 10;
     public static int amateurSteps = 16;
     public static int profiSteps = 20;
 
+    /* BOOLEAN Variables <Difficulty> */
+    public boolean rookieTrue = false;
+    public boolean amateurTrue = false;
+    public boolean profiTrue = false;
 
+    /* CREATE Menubar */
+    JMenuBar menubar = new JMenuBar();
+    JMenu gamemenu = new JMenu("Spielmenü");
+    JMenu picture = new JMenu("Bildauswahl");
+    JMenu difficulty = new JMenu("Schwierigkeitsgrad");
+
+    /* CREATE Menu <Restart> */
+    JMenuItem restart = new JMenuItem("Neustart");
+
+    /* CREATE Menu <Exit>  */
+    JMenuItem exit = new JMenuItem("Beenden");
+
+
+    /* CREATE MenuItems <Pictures> */
+    JMenuItem pic1 = new JMenuItem("Mary Jane");
+    JMenuItem pic2 = new JMenuItem("Megan Fox");
+    JMenuItem pic3 = new JMenuItem("Salma Hayek");
+
+    /* CREATE MenuItems <Difficulty> */
     ButtonGroup diffGroup = new ButtonGroup();
     JRadioButtonMenuItem rookie = new JRadioButtonMenuItem("Rookie");
     JRadioButtonMenuItem amateur = new JRadioButtonMenuItem("Amateur");
     JRadioButtonMenuItem profi = new JRadioButtonMenuItem("Profi");
-
-    public JPanel getPanel() {
-        return panel;
-    }
 
 
     public PuzzleEx() {
@@ -76,9 +84,18 @@ public class PuzzleEx extends JFrame {
 
     private void initUI() {
 
-        panel = new JPanel();
+        /* STARTUP REMOVE */
+        if (UIstartup == 0) {
 
-        gameStat= new JPanel();
+            panel.removeAll();
+            panel.repaint();
+            panel.invalidate();
+            panel.validate();
+            remove(panel);
+
+        }
+
+        panel = new JPanel();
 
         solution = new ArrayList<>();
 
@@ -97,6 +114,7 @@ public class PuzzleEx extends JFrame {
 
         buttons = new ArrayList<>();
 
+
         panel.removeAll();
         panel.repaint();
         panel.invalidate();
@@ -104,154 +122,149 @@ public class PuzzleEx extends JFrame {
         panel.setBorder(BorderFactory.createLineBorder(Color.gray));
         panel.setLayout(new GridLayout(4, 3, 0, 0));
 
-        JMenuBar menubar = new JMenuBar();
-        JMenu gamemenu = new JMenu("Spielmenü");
-        JMenu picture = new JMenu("Bildauswahl");
-        JMenu difficulty = new JMenu("Schwierigkeitsgrad");
+
+        /* STARTUP SCHLEIFE */
+        if (UIstartup == 1) {
+
+            /* Menu <Restart>  */
+            restart.setToolTipText("Startet das Spiel neu");
+            restart.addActionListener((ActionEvent event) -> {
+
+                rookieSteps = 10;
+                amateurSteps = 16;
+                profiSteps = 20;
+
+                remove(panel);
+                initUI();
+            });
 
 
-        // 1 Menu < Neustart >
-        restart = new JMenuItem("Neustart");
-        restart.setToolTipText("Startet das Spiel neu");
+            /* Menu <Exit>  */
+
+            exit.setToolTipText("Beendet das Spiel");
+            exit.addActionListener((ActionEvent event) -> {
+                System.exit(0);
+            });
 
 
-        restart.addActionListener((ActionEvent event) ->{
+            /* Menu <Bildauswahl>  */
 
-            rookieSteps = 10;
-            amateurSteps = 16;
-            profiSteps = 20;
-
-            remove(panel);
-            initUI();
-        } );
-
-        // 1 Menu < Exit >
-        exit =  new JMenuItem("Beenden");
-        exit.setToolTipText("Beendet das Spiel");
-        exit.addActionListener((ActionEvent event) ->{
-            System.exit(0);
-        } );
+            pic1.addActionListener((ActionEvent event) -> {
 
 
+                img = IMAGE1;
+                remove(panel);
+                initUI();
 
-        // 2 Menu < Bildauswahl >
-        JMenuItem pic1 = new JMenuItem("Mary Jane");
-        pic1.addActionListener((ActionEvent event) ->{
+            });
 
+            pic2.addActionListener((ActionEvent event) -> {
 
-            img = IMAGE1;
-            remove(panel);
-            initUI();
+                img = IMAGE2;
+                remove(panel);
+                initUI();
 
-        } );
+            });
 
-        JMenuItem pic2 = new JMenuItem("Megan Fox");
-        pic2.addActionListener((ActionEvent event) ->{
+            pic3.addActionListener((ActionEvent event) -> {
 
-            img = IMAGE2;
-            remove(panel);
-            initUI();
+                img = IMAGE3;
+                remove(panel);
+                initUI();
 
-        } );
-
-        JMenuItem pic3 = new JMenuItem("Salma Hayek");
-        pic3.addActionListener((ActionEvent event) ->{
-
-            img = IMAGE3;
-            remove(panel);
-            initUI();
-
-        } );
+            });
 
 
+            /* 3 Menu <Difficulty>  */
 
-
-        // 3 Menu <Difficulty>
-
-        //DEFAULT
-        rookie.setSelected(true);
-        rookieTrue = true;
-
-
-        rookie.addActionListener((ActionEvent event) ->{
-
-            remove(panel);
-            initUI();
-
+            // DEFAULT
             rookie.setSelected(true);
             rookieTrue = true;
-            amateurTrue = false;
-            profiTrue = false;
 
-            rookieSteps = 10;
-            amateurSteps = 16;
-            profiSteps = 20;
+            // ROOKIE
+            rookie.addActionListener((ActionEvent event) -> {
 
-            System.out.println("VERSUCHE : " + rookieSteps);
+                remove(panel);
+                initUI();
 
+                rookie.setSelected(true);
+                rookieTrue = true;
+                amateurTrue = false;
+                profiTrue = false;
 
-        } );
+                rookieSteps = 10;
+                amateurSteps = 16;
+                profiSteps = 20;
 
-
-        amateur.addActionListener((ActionEvent event) ->{
-
-            remove(panel);
-            initUI();
-
-            amateur.setSelected(true);
-            rookieTrue = false;
-            amateurTrue = true;
-            profiTrue = false;
-
-            rookieSteps = 10;
-            amateurSteps = 16;
-            profiSteps = 20;
-
-            System.out.println("VERSUCHE : " + amateurSteps);
+                System.out.println("VERSUCHE : " + rookieSteps);
 
 
-        } );
+            });
 
-        profi.addActionListener((ActionEvent event) ->{
+            // AMATEUR
+            amateur.addActionListener((ActionEvent event) -> {
 
-            remove(panel);
-            initUI();
+                remove(panel);
+                initUI();
 
-            profi.setSelected(true);
-            rookieTrue = false;
-            amateurTrue = false;
-            profiTrue = true;
+                amateur.setSelected(true);
+                rookieTrue = false;
+                amateurTrue = true;
+                profiTrue = false;
 
-            rookieSteps = 10;
-            amateurSteps = 16;
-            profiSteps = 20;
+                rookieSteps = 10;
+                amateurSteps = 16;
+                profiSteps = 20;
 
-            System.out.println("VERSUCHE : " + profiSteps);
-
-
-        } );
+                System.out.println("VERSUCHE : " + amateurSteps);
 
 
-        diffGroup.add(rookie);
-        diffGroup.add(amateur);
-        diffGroup.add(profi);
+            });
 
-        gamemenu.add(restart);
-        gamemenu.add(exit);
+            // PROFI
+            profi.addActionListener((ActionEvent event) -> {
 
-        picture.add(pic1);
-        picture.add(pic2);
-        picture.add(pic3);
+                remove(panel);
+                initUI();
 
-        difficulty.add(rookie);
-        difficulty.add(amateur);
-        difficulty.add(profi);
+                profi.setSelected(true);
+                rookieTrue = false;
+                amateurTrue = false;
+                profiTrue = true;
 
-        menubar.add(gamemenu);
-        menubar.add(picture);
-        menubar.add(difficulty);
+                rookieSteps = 10;
+                amateurSteps = 16;
+                profiSteps = 20;
 
-        setJMenuBar(menubar);
+                System.out.println("VERSUCHE : " + profiSteps);
+
+
+            });
+
+
+            /* ADDING MenuItems to FRAME */
+            diffGroup.add(rookie);
+            diffGroup.add(amateur);
+            diffGroup.add(profi);
+
+            gamemenu.add(restart);
+            gamemenu.add(exit);
+
+            picture.add(pic1);
+            picture.add(pic2);
+            picture.add(pic3);
+
+            difficulty.add(rookie);
+            difficulty.add(amateur);
+            difficulty.add(profi);
+
+            menubar.add(gamemenu);
+            menubar.add(picture);
+            menubar.add(difficulty);
+
+            setJMenuBar(menubar);
+
+        }
 
 
         try {
@@ -269,8 +282,9 @@ public class PuzzleEx extends JFrame {
         height = resized.getHeight(null);
 
 
-
+        /* ADDING Panel to FRAME */
         add(panel, BorderLayout.CENTER);
+
 
         for (int i = 0; i < 4; i++) {
 
@@ -299,7 +313,7 @@ public class PuzzleEx extends JFrame {
 
         Collections.shuffle(buttons, new java.util.Random(System.currentTimeMillis()));
 
-        for (MyButton btn :  buttons){
+        for (MyButton btn : buttons) {
             panel.add(btn);
             btn.setBorder(BorderFactory.createLineBorder(Color.gray));
             btn.addActionListener(new ClickAction(this));
@@ -311,8 +325,23 @@ public class PuzzleEx extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        /* STARTUP CLOSE */
+        UIstartup = 0;
     }
 
+
+    public Path getPicPath() {
+        return picPath;
+    }
+
+    public List<MyButton> getButtons() {
+        return buttons;
+    }
+
+    public JPanel getPanel() {
+        return panel;
+    }
 
 
     private int getNewHeight(int w, int h) {
@@ -322,7 +351,7 @@ public class PuzzleEx extends JFrame {
         return newHeight;
     }
 
-    private void gameOver () throws IOException{
+    private void gameOver() throws IOException {
 
         /*panel.removeAll();
         panel.repaint();
@@ -361,8 +390,6 @@ public class PuzzleEx extends JFrame {
         remove(panel);
 
 
-
-
     }
 
     private BufferedImage loadImage() throws IOException {
@@ -373,9 +400,8 @@ public class PuzzleEx extends JFrame {
 
         panel.removeAll();
         panel.repaint();
-        switch (img)
-        {
-            case IMAGE1:  {
+        switch (img) {
+            case IMAGE1: {
 
                 /*URL url = getClass().getResource("res/pic1.jpg");
                 String picPath = url.toString();
@@ -387,12 +413,12 @@ public class PuzzleEx extends JFrame {
                 break;
 
             }
-            case IMAGE2:  {
+            case IMAGE2: {
                 bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/megan_fox.jpg"));
                 break;
 
             }
-            case IMAGE3:  {
+            case IMAGE3: {
                 bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/salma_hayek.jpg"));
                 break;
 
@@ -409,8 +435,7 @@ public class PuzzleEx extends JFrame {
                 bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream(getPicPath().toString()));
                 break;
             }
-            default:
-            {
+            default: {
 
                 /*URL url = getClass().getResource("/res/pic1.jpg");
                 System.out.println("DEFAUL URL : " + url.getPath());
@@ -438,35 +463,34 @@ public class PuzzleEx extends JFrame {
     }
 
 
-    public void checkRadioBtn(){
+    public void checkRadioBtn() {
 
         // CHECK RADIOBUTTON
 
         System.out.println("CHECK RADIO BUTTON METHOD USED!!! ");
-        if(rookieTrue){
+        if (rookieTrue) {
             System.out.println(rookieSteps);
-            rookieSteps = rookieSteps-1;
+            rookieSteps = rookieSteps - 1;
             System.out.println(rookieSteps);
-        }
-        else if(amateur.isSelected()){
+        } else if (amateur.isSelected()) {
             System.out.println(amateurSteps);
-            amateurSteps = amateurSteps-1;
+            amateurSteps = amateurSteps - 1;
             System.out.println(amateurSteps);
 
-        } else if(profi.isSelected()){
+        } else if (profi.isSelected()) {
             System.out.println(profiSteps);
-            profiSteps = profiSteps-1;
+            profiSteps = profiSteps - 1;
             System.out.println(profiSteps);
         }
 
     }
 
-    public void checkSteps(){
+    public void checkSteps() {
 
         System.out.println("checkSteps used.");
 
         // CHECK ZERO STEPS
-        if(rookieSteps == 0 || amateurSteps == 0 || profiSteps == 0 ){
+        if (rookieSteps == 0 || amateurSteps == 0 || profiSteps == 0) {
             try {
                 gameOver();
             } catch (IOException e) {
