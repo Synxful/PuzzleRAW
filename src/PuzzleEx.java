@@ -360,11 +360,6 @@ public class PuzzleEx extends JFrame {
 
         /* GAME OVER */
         JOptionPane.showMessageDialog(null,"GAME OVER !");
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         /* RESTART panel */
         UIrestart();
