@@ -186,6 +186,15 @@ public class PuzzleEx extends JFrame {
             });
 
 
+
+            // 1 Menu < Neustart >
+
+            restart.setToolTipText("Startet das Spiel neu");
+            restart.addActionListener((ActionEvent event) ->{
+
+                UIrestart();
+            } );
+
             /* Menu <Exit>  */
 
             exit.setToolTipText("Beendet das Spiel");
@@ -339,33 +348,6 @@ public class PuzzleEx extends JFrame {
 
     private void gameOver() throws IOException {
 
-        /*panel.removeAll();
-        panel.repaint();
-        remove(panel);
-
-        try {
-            BufferedImage bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/game_over.jpg"));
-            source = bimg;
-            int h = getNewHeight(source.getWidth(), source.getHeight());
-            resized = resizeImage(source, DESIRED_WIDTH, h,
-                    BufferedImage.TYPE_INT_ARGB);
-
-        } catch (IOException ex) {
-            Logger.getLogger(PuzzleEx.class.getName()).log(
-                    Level.SEVERE, null, ex);
-        }
-
-        width = resized.getWidth(null);
-        height = resized.getHeight(null);
-
-        pack();
-        setTitle("Puzzle");
-        setResizable(false);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
-
-
-
         /*BufferedImage bimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/game_over.jpg"));
         JLabel picLabel = new JLabel(new ImageIcon(bimg));
         panel.add(picLabel);*/
@@ -376,6 +358,16 @@ public class PuzzleEx extends JFrame {
         remove(panel);
 
 
+        /* GAME OVER */
+        JOptionPane.showMessageDialog(null,"GAME OVER !");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        /* RESTART panel */
+        UIrestart();
     }
 
     private BufferedImage loadImage() throws IOException {
@@ -448,6 +440,11 @@ public class PuzzleEx extends JFrame {
         return resizedImage;
     }
 
+    public void UIrestart(){
+        setMaxSteps();
+        remove(panel);
+        initUI();
+    }
 
     public void setMaxSteps() {
         rookieSteps = 10;
@@ -461,18 +458,15 @@ public class PuzzleEx extends JFrame {
 
         System.out.println("CHECK RADIO BUTTON METHOD USED!!! ");
         if (rookieTrue) {
-            System.out.println(rookieSteps);
             rookieSteps = rookieSteps - 1;
-            System.out.println(rookieSteps);
+            System.out.println("Steps left for ROOKIE : " + rookieSteps);
         } else if (amateur.isSelected()) {
-            System.out.println(amateurSteps);
             amateurSteps = amateurSteps - 1;
-            System.out.println(amateurSteps);
+            System.out.println("Steps left for AMATEUR : " + amateurSteps);
 
         } else if (profi.isSelected()) {
-            System.out.println(profiSteps);
             profiSteps = profiSteps - 1;
-            System.out.println(profiSteps);
+            System.out.println("Steps left for PROFI : " + profiSteps);
         }
 
     }
