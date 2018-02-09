@@ -137,6 +137,7 @@ public class PuzzleEx extends JFrame {
                 remove(panel);
                 initUI();
 
+                System.out.println("CHOOSEN 'ROOKIE' DIFFICULTY");
                 rookie.setSelected(true);
                 rookieTrue = true;
                 amateurTrue = false;
@@ -155,6 +156,7 @@ public class PuzzleEx extends JFrame {
                 remove(panel);
                 initUI();
 
+                System.out.println("CHOOSEN 'AMATEUR' DIFFICULTY");
                 amateur.setSelected(true);
                 rookieTrue = false;
                 amateurTrue = true;
@@ -173,6 +175,7 @@ public class PuzzleEx extends JFrame {
                 remove(panel);
                 initUI();
 
+                System.out.println("CHOOSEN 'PROFI' DIFFICULTY");
                 profi.setSelected(true);
                 rookieTrue = false;
                 amateurTrue = false;
@@ -193,13 +196,16 @@ public class PuzzleEx extends JFrame {
             restart.addActionListener((ActionEvent event) ->{
 
                 UIrestart();
+
             } );
 
             /* Menu <Exit>  */
 
             exit.setToolTipText("Beendet das Spiel");
             exit.addActionListener((ActionEvent event) -> {
-                System.exit(0);
+
+                UIexit();
+
             });
 
         /* Menu <Bildauswahl>  */
@@ -207,6 +213,7 @@ public class PuzzleEx extends JFrame {
             pic1.addActionListener((ActionEvent event) -> {
 
 
+                System.out.println("CHOOSEN 'MARY JANE' PICTURE");
                 setMaxSteps();
                 img = IMAGE1;
                 remove(panel);
@@ -217,7 +224,7 @@ public class PuzzleEx extends JFrame {
 
             pic2.addActionListener((ActionEvent event) -> {
 
-
+                System.out.println("CHOOSEN 'MEGAN FOX' PICTURE");
                 setMaxSteps();
                 img = IMAGE2;
                 remove(panel);
@@ -227,6 +234,7 @@ public class PuzzleEx extends JFrame {
 
             pic3.addActionListener((ActionEvent event) -> {
 
+                System.out.println("CHOOSEN 'SALMA HAYEK' PICTURE");
                 setMaxSteps();
                 img = IMAGE3;
                 remove(panel);
@@ -360,6 +368,7 @@ public class PuzzleEx extends JFrame {
 
         /* GAME OVER */
         JOptionPane.showMessageDialog(null,"GAME OVER !");
+        System.out.println("GAME OVER!");
 
         /* RESTART panel */
         UIrestart();
@@ -439,6 +448,19 @@ public class PuzzleEx extends JFrame {
         setMaxSteps();
         remove(panel);
         initUI();
+        System.out.println("RESTARTED!");
+    }
+
+    public void UIexit(){
+
+        System.out.println("CLOSING THE GAME !");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.exit(0);
+
     }
 
     public void setMaxSteps() {
@@ -472,7 +494,6 @@ public class PuzzleEx extends JFrame {
         if (rookieSteps == 0 || amateurSteps == 0 || profiSteps == 0) {
             try {
                 gameOver();
-                System.out.println("GAME OVER !");
             } catch (IOException e) {
                 e.printStackTrace();
             }
